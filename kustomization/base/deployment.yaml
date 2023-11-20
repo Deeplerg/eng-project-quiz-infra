@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quizapp
+spec:
+  selector:
+    matchLabels:
+      app: quizapp
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: quizapp
+    spec:
+      nodeSelector:
+        edge: "true"
+      containers:
+      - name: quizapp
+        image: quizapp-image-name # USE KUSTOMIZATION
+        ports:
+        - containerPort: 8080
+        resources:
+          limits:
+            cpu: 500m
+            memory: 128Mi
+      imagePullSecrets:
+      - name: docker-registry-cred

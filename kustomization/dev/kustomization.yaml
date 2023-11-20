@@ -1,0 +1,67 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+
+resources:
+  - "../base"
+
+namespace: quizapp-dev
+nameSuffix: -dev
+
+images:
+- name: quizapp-image-name
+  newName: quizapp-image-name # still need to change this with "kustomize edit set image"
+  newTag: latest # this too
+
+configMapGenerator:
+  - name: environment-variables
+    envs:
+      - "environment-variables.env"
+    behavior: create
+
+replacements:
+- source:
+    kind: ConfigMap
+    name: environment-variables
+    fieldPath: data.CERT_MANAGER_ISSUER
+  targets:
+  - select:
+      kind: Ingress
+    fieldPaths: 
+    - "metadata.annotations.[cert-manager.io/issuer]"
+- source:
+    kind: ConfigMap
+    name: environment-variables
+    fieldPath: data.INGRESS_CLASS_NAME
+  targets:
+  - select:
+      kind: Ingress
+    fieldPaths: 
+    - "spec.ingressClassName"
+- source:
+    kind: ConfigMap
+    name: environment-variables
+    fieldPath: data.INGRESS_TLS_HOST
+  targets:
+  - select:
+      kind: Ingress
+    fieldPaths: 
+    - "spec.tls.0.hosts"
+- source:
+    kind: ConfigMap
+    name: environment-variables
+    fieldPath: data.INGRESS_TLS_SECRETNAME
+  targets:
+  - select:
+      kind: Ingress
+    fieldPaths: 
+    - "spec.tls.0.secretName"
+- source:
+    kind: ConfigMap
+    name: environment-variables
+    fieldPath: data.INGRESS_HOST
+  targets:
+  - select:
+      kind: Ingress
+    fieldPaths: 
+    - "spec.rules.0.host"

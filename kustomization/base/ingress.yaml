@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: quizapp-ingress
+  annotations:
+    cert-manager.io/issuer: $(CERT_MANAGER_ISSUER)
+spec:
+  ingressClassName: $(INGRESS_CLASS_NAME)
+  tls:
+  - hosts:
+    - $(INGRESS_TLS_HOST)
+    secretName: $(INGRESS_TLS_SECRETNAME)
+  rules:
+  - host: $(INGRESS_HOST)
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: quizapp-svc
+            port:
+              number: 80
