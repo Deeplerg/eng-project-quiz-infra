@@ -3,81 +3,81 @@ kind: Kustomization
 
 
 resources:
-  - "../base"
+- ../base
 
 namespace: quizapp-wip-cicd
 nameSuffix: -wip-cicd
 
 images:
 - name: quizapp-image-name
-  newName: quizapp-image-name # still need to change this with "kustomize edit set image"
-  newTag: latest # this too
+  newName: /quizapp
+  newTag: wip-cicd-b015866c
 
 configMapGenerator:
-  - name: environment-variables
-    envs:
-      - "environment-variables.env"
-    behavior: create
-  - name: namespace
-    literals:
-    - NAME=quizapp-wip-cicd
-    behavior: create
-  - name: registry-secrets
-    literals:
-    - NAME=docker-registry-cred-quizapp-wip-cicd
+- behavior: create
+  envs:
+  - environment-variables.env
+  name: environment-variables
+- behavior: create
+  literals:
+  - NAME=quizapp-wip-cicd
+  name: namespace
+- literals:
+  - NAME=docker-registry-cred-quizapp-wip-cicd
+  name: registry-secrets
 
 replacements:
 - source:
+    fieldPath: data.NAME
     kind: ConfigMap
     name: namespace
-    fieldPath: data.NAME
   targets:
-  - select:
+  - fieldPaths:
+    - metadata.name
+    select:
       kind: Namespace
-    fieldPaths:
-      - "metadata.name"
 - source:
+    fieldPath: data.NAME
     kind: ConfigMap
     name: registry-secrets
-    fieldPath: data.NAME
   targets:
-    - select:
-        kind: Deployment
-      fieldPaths: 
-      - spec.template.spec.imagePullSecrets.0.name
+  - fieldPaths:
+    - spec.template.spec.imagePullSecrets.0.name
+    select:
+      kind: Deployment
 - source:
-    kind: ConfigMap
-    name: environment-variables
     fieldPath: data.INGRESS_CLASS_NAME
-  targets:
-  - select:
-      kind: Ingress
-    fieldPaths: 
-    - "spec.ingressClassName"
-- source:
     kind: ConfigMap
     name: environment-variables
+  targets:
+  - fieldPaths:
+    - spec.ingressClassName
+    select:
+      kind: Ingress
+- source:
     fieldPath: data.INGRESS_TLS_HOST
-  targets:
-  - select:
-      kind: Ingress
-    fieldPaths: 
-    - "spec.tls.0.hosts.0"
-- source:
     kind: ConfigMap
     name: environment-variables
+  targets:
+  - fieldPaths:
+    - spec.tls.0.hosts.0
+    select:
+      kind: Ingress
+- source:
     fieldPath: data.INGRESS_TLS_SECRETNAME
-  targets:
-  - select:
-      kind: Ingress
-    fieldPaths: 
-    - "spec.tls.0.secretName"
-- source:
     kind: ConfigMap
     name: environment-variables
-    fieldPath: data.INGRESS_HOST
   targets:
-  - select:
+  - fieldPaths:
+    - spec.tls.0.secretName
+    select:
       kind: Ingress
-    fieldPaths: 
-    - "spec.rules.0.host"
+- source:
+    fieldPath: data.INGRESS_HOST
+    kind: ConfigMap
+    name: environment-variables
+  targets:
+  - fieldPaths:
+    - spec.rules.0.host
+    select:
+      kind: Ingress
