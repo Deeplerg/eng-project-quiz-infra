@@ -13,7 +13,7 @@ spec:
         app: quizapp
     spec:
       nodeSelector:
-        edge: "true"
+        edge: "false"
       containers:
       - name: quizapp
         image: quizapp-image-name # USE KUSTOMIZATION
