@@ -45,15 +45,15 @@ replacements:
         kind: Deployment
       fieldPaths: 
       - spec.template.spec.imagePullSecrets.0.name
-- source:
-    kind: ConfigMap
-    name: environment-variables
-    fieldPath: data.CERT_MANAGER_ISSUER
-  targets:
-  - select:
-      kind: Ingress
-    fieldPaths: 
-    - "metadata.annotations.[cert-manager.io/issuer]"
+#- source:
+#    kind: ConfigMap
+#    name: environment-variables
+#    fieldPath: data.CERT_MANAGER_ISSUER
+#  targets:
+#  - select:
+#      kind: Ingress
+#    fieldPaths: 
+#    - "metadata.annotations.[cert-manager.io/issuer]"
 - source:
     kind: ConfigMap
     name: environment-variables
@@ -72,15 +72,15 @@ replacements:
       kind: Ingress
     fieldPaths: 
     - "spec.tls.0.hosts.0"
-- source:
-    kind: ConfigMap
-    name: environment-variables
-    fieldPath: data.INGRESS_TLS_SECRETNAME
-  targets:
-  - select:
-      kind: Ingress
-    fieldPaths: 
-    - "spec.tls.0.secretName"
+#- source:
+#    kind: ConfigMap
+#    name: environment-variables
+#    fieldPath: data.INGRESS_TLS_SECRETNAME
+#  targets:
+#  - select:
+#      kind: Ingress
+#    fieldPaths: 
+#    - "spec.tls.0.secretName"
 - source:
     kind: ConfigMap
     name: environment-variables

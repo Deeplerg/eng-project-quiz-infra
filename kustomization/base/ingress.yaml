@@ -2,14 +2,16 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: quizapp-ingress
-  annotations:
-    cert-manager.io/issuer: $(CERT_MANAGER_ISSUER)
+#  annotations:
+#    cert-manager.io/issuer: $(CERT_MANAGER_ISSUER)
+# just in case - avoid accidental issuing of certificates
 spec:
   ingressClassName: $(INGRESS_CLASS_NAME)
   tls:
   - hosts:
     - $(INGRESS_TLS_HOST)
-    secretName: $(INGRESS_TLS_SECRETNAME)
+#    secretName: $(INGRESS_TLS_SECRETNAME)
+# use default certificate instead
   rules:
   - host: $(INGRESS_HOST)
     http:
