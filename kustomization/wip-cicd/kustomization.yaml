@@ -11,7 +11,7 @@ nameSuffix: -wip-cicd
 images:
 - name: quizapp-image-name
   newName: /quizapp
-  newTag: wip-cicd-21b8c602
+  newTag: wip-cicd-acfe7ec1
 
 configMapGenerator:
 - behavior: create
