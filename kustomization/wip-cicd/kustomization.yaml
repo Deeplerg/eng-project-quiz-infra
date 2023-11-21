@@ -10,8 +10,8 @@ nameSuffix: -wip-cicd
 
 images:
 - name: quizapp-image-name
-  newName: /quizapp
-  newTag: wip-cicd-acfe7ec1
+  newName: docker-registry-svc.docker-registry:5000/quizapp
+  newTag: wip-cicd-59f0ba25
 
 configMapGenerator:
 - behavior: create
