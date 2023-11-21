@@ -22,6 +22,9 @@ configMapGenerator:
     literals:
     - NAME=quizapp-wip-cicd
     behavior: create
+  - name: registry-secrets
+    literals:
+    - NAME=docker-registry-cred-quizapp-wip-cicd
 
 replacements:
 - source:
@@ -35,13 +38,13 @@ replacements:
       - "metadata.name"
 - source:
     kind: ConfigMap
-    name: environment-variables
-    fieldPath: data.CERT_MANAGER_ISSUER
+    name: registry-secrets
+    fieldPath: data.NAME
   targets:
-  - select:
-      kind: Ingress
-    fieldPaths: 
-    - "metadata.annotations.[cert-manager.io/issuer]"
+    - select:
+        kind: Deployment
+      fieldPaths: 
+      - spec.template.spec.imagePullSecrets.0.name
 - source:
     kind: ConfigMap
     name: environment-variables

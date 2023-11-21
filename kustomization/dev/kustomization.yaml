@@ -22,6 +22,9 @@ configMapGenerator:
     literals:
     - NAME=quizapp-dev
     behavior: create
+  - name: registry-secrets
+    literals:
+    - NAME=docker-registry-cred-quizapp-dev
 
 replacements:
 - source:
@@ -33,6 +36,15 @@ replacements:
       kind: Namespace
     fieldPaths:
       - "metadata.name"
+- source:
+    kind: ConfigMap
+    name: registry-secrets
+    fieldPath: data.NAME
+  targets:
+    - select:
+        kind: Deployment
+      fieldPaths: 
+      - spec.template.spec.imagePullSecrets.0.name
 - source:
     kind: ConfigMap
     name: environment-variables
