@@ -11,7 +11,7 @@ nameSuffix: -wip-cicd
 images:
 - name: quizapp-image-name
   newName: /quizapp
-  newTag: wip-cicd-ab29c365
+  newTag: wip-cicd-21b8c602
 
 configMapGenerator:
 - behavior: create
@@ -26,6 +26,24 @@ configMapGenerator:
   - NAME=docker-registry-cred-quizapp-wip-cicd
   name: registry-secrets
 
+#- source:
+#    kind: ConfigMap
+#    name: environment-variables
+#    fieldPath: data.CERT_MANAGER_ISSUER
+#  targets:
+#    - select:
+#        kind: Ingress
+#      fieldPaths:
+#        - "metadata.annotations.[cert-manager.io/issuer]"
+#- source:
+#    fieldPath: data.INGRESS_TLS_SECRETNAME
+#    kind: ConfigMap
+#    name: environment-variables
+#  targets:
+#  - fieldPaths:
+#    - spec.tls.0.secretName
+#    select:
+#      kind: Ingress
 replacements:
 - source:
     fieldPath: data.NAME
@@ -45,15 +63,6 @@ replacements:
     - spec.template.spec.imagePullSecrets.0.name
     select:
       kind: Deployment
-#- source:
-#    kind: ConfigMap
-#    name: environment-variables
-#    fieldPath: data.CERT_MANAGER_ISSUER
-#  targets:
-#    - select:
-#        kind: Ingress
-#      fieldPaths:
-#        - "metadata.annotations.[cert-manager.io/issuer]"
 - source:
     fieldPath: data.INGRESS_CLASS_NAME
     kind: ConfigMap
@@ -72,15 +81,6 @@ replacements:
     - spec.tls.0.hosts.0
     select:
       kind: Ingress
-#- source:
-#    fieldPath: data.INGRESS_TLS_SECRETNAME
-#    kind: ConfigMap
-#    name: environment-variables
-#  targets:
-#  - fieldPaths:
-#    - spec.tls.0.secretName
-#    select:
-#      kind: Ingress
 - source:
     fieldPath: data.INGRESS_HOST
     kind: ConfigMap
