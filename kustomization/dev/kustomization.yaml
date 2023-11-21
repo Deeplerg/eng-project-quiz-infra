@@ -18,8 +18,21 @@ configMapGenerator:
     envs:
       - "environment-variables.env"
     behavior: create
+  - name: namespace
+    literals:
+    - NAME=quizapp-dev
+    behavior: create
 
 replacements:
+- source:
+    kind: ConfigMap
+    name: namespace
+    fieldPath: data.NAME
+  targets:
+  - select:
+      kind: Namespace
+    fieldPaths:
+      - "metadata.name"
 - source:
     kind: ConfigMap
     name: environment-variables
