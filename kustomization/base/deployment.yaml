@@ -26,5 +26,15 @@ spec:
           requests:
             cpu: 0m # schedule first, think later!
             memory: 64Mi
+        env:
+        - name: SecretsPath
+          value: /secrets
+        volumeMounts:
+        - name: secret-volume
+          mountPath: /secrets
       imagePullSecrets:
       - name: docker-registry-cred
+      volumes:
+        - name: secret-volume
+          secret:
+            secretName: quizapp-db-secret
