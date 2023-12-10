@@ -29,6 +29,11 @@ spec:
         env:
         - name: SecretsPath
           value: /secrets
+        - name: ConnectionStrings__Database
+          valueFrom:
+            secretKeyRef:
+              key: ConnectionStrings__Database
+              name: quizapp-db-secret
         volumeMounts:
         - name: secret-volume
           mountPath: /secrets
