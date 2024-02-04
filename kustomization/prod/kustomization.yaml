@@ -11,7 +11,7 @@ nameSuffix: -prod
 images:
 - name: quizapp-image-name
   newName: 10.96.55.55:5000/quizapp
-  newTag: prod-dcdbb0a6
+  newTag: prod-b109f443
 
 configMapGenerator:
 - behavior: create
